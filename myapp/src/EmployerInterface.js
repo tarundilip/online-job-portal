@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
-import JobForm from './JobForm';
-import Profile from './Profile';
-import CandidateApplications from './CandidateApplications';
-import './App.css';
+import React, { useState } from "react";
+import JobForm from "./JobForm";
+import Profile from "./Profile";
+//import CandidateApplications from "./CandidateApplications";
+import JobApplications from "./JobApplications"; // Importing sample data
+import "./App.css";
 
-function EmployerInterface({ onAddJob, jobApplications }) {
-  const [view, setView] = useState('addJobs');
-  const [jobs, setJobs] = useState([]); 
+function EmployerInterface({ onAddJob, jobApplications: applicationsFromApp }) {
+  const [view, setView] = useState("addJobs");
+  const [jobs, setJobs] = useState([]);
 
   const generateUniqueId = () => {
     return Math.floor(Math.random() * 1000000).toString();
@@ -15,7 +16,7 @@ function EmployerInterface({ onAddJob, jobApplications }) {
   const handleJobAddition = (newJob) => {
     const newJobWithId = {
       ...newJob,
-      id: generateUniqueId()
+      id: generateUniqueId(),
     };
     setJobs((prev) => [...prev, newJobWithId]);
     onAddJob(newJobWithId);
@@ -23,23 +24,21 @@ function EmployerInterface({ onAddJob, jobApplications }) {
 
   const handleRemoveJob = (jobId) => {
     setJobs((prev) => prev.filter((job) => job.id !== jobId));
-    alert('Job has been removed.');
+    alert("Job has been removed.");
   };
 
   return (
     <div className="employer-interface">
       <nav>
-        <button onClick={() => setView('addJobs')}>Add Jobs</button>
-        <button onClick={() => setView('myJobs')}>My Jobs</button>
-        <button onClick={() => setView('employees')}>Employees</button>
-        <button onClick={() => setView('profile')}>Profile</button>
+        <button onClick={() => setView("addJobs")}>Add Jobs</button>
+        <button onClick={() => setView("myJobs")}>My Jobs</button>
+        <button onClick={() => setView("employees")}>Employees</button>
+        <button onClick={() => setView("profile")}>Profile</button>
       </nav>
 
-      
-      {view === 'addJobs' && <JobForm onAddJob={handleJobAddition} />}
+      {view === "addJobs" && <JobForm onAddJob={handleJobAddition} />}
 
-      
-      {view === 'myJobs' && (
+      {view === "myJobs" && (
         <div>
           {jobs.length === 0 ? (
             <p>No jobs posted yet.</p>
@@ -58,28 +57,33 @@ function EmployerInterface({ onAddJob, jobApplications }) {
         </div>
       )}
 
-    
-      {view === 'employees' && (
+      {view === "employees" && (
         <div>
-          {jobApplications.length === 0 ? (
+          {JobApplications.length === 0 ? (
             <p>No applications received yet.</p>
           ) : (
-            jobApplications.map((application, index) => (
-              <div key={index} className="application-details">
-                <h4>Job Title: {application.title}</h4>
-                <p>Description: {application.description}</p>
-                <p>Salary: {application.salary}</p>
-                <p>Type: {application.type}</p>
-                <p>Mode: {application.mode}</p>
-                <CandidateApplications applications={[application]} />
+            JobApplications.map((job) => (
+              <div key={job.jobId} className="application-details">
+                <h4>Job Title: {job.jobTitle}</h4>
+                <ul>
+                  {job.applicants.map((applicant, index) => (
+                    <li key={index}>
+                      <p>
+                        <strong>Name:</strong> {applicant.name}
+                      </p>
+                      <p>
+                        <strong>Email:</strong> {applicant.email}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
               </div>
             ))
           )}
         </div>
       )}
 
-      
-      {view === 'profile' && <Profile userType="employer" />}
+      {view === "profile" && <Profile userType="employer" />}
     </div>
   );
 }

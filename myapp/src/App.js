@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Login from './Login';
+import Signup from './Signup';
 import WelcomePage from './WelcomePage';
 import CandidateInterface from './CandidateInterface';
 import EmployerInterface from './EmployerInterface';
@@ -36,11 +37,11 @@ function App() {
 
   const handleJobApply = (job) => {
     setAppliedJobs((prev) => ({ ...prev, [job.id]: true }));
-    setJobApplications((prev) => [...prev, job]);  
+    setJobApplications((prev) => [...prev, job]);
   };
 
   const handleAddJob = (job) => {
-    setPostedJobs((prev) => [...prev, job]);  
+    setPostedJobs((prev) => [...prev, job]);
   };
 
   return (
@@ -50,8 +51,8 @@ function App() {
       <Routes>
         <Route path="/" element={<WelcomePage />} />
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
+        <Route path="/signup" element={<Signup />} />
 
-        
         <Route
           path="/candidateInterface"
           element={
@@ -63,7 +64,6 @@ function App() {
           }
         />
 
-        
         <Route
           path="/employerInterface"
           element={
